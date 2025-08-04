@@ -47,12 +47,6 @@ root_agent = AgentClass(
     name="{$agentName}",
     instruction="""{$agentInstruction}""",   
     
-    # toolset = [MCPToolset(
-    #         connection_params=SseConnectionParams(url="https://session-1753173224-541238774180.us-central1.run.app/sse")
-    #     ),
-    #     tool_filter=AVAILABLE_TOOLS
-    # ],
-    
     tools=[
         MCPToolset(
             connection_params=SseConnectionParams(

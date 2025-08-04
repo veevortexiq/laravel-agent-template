@@ -20,11 +20,11 @@ from google.adk.agents.callback_context import CallbackContext
 from google.adk.planners import BuiltInPlanner
 from google.genai import types
 
-# {$agentOpsBlock}
+{$agentOpsBlock}
 
 # Available tools for this agent
-# AVAILABLE_TOOLS = {$toolNames}
-AVAILABLE_TOOLS = ["count_product_variants"]
+AVAILABLE_TOOLS = {$toolNames}
+# 
 
 # Map agent types to their corresponding classes
 AGENT_CLASS_MAP = {
@@ -35,17 +35,26 @@ AGENT_CLASS_MAP = {
 }
 
 # Get the agent class based on execution type
-AgentClass = AGENT_CLASS_MAP.get("LlmAgent")
+AgentClass = AGENT_CLASS_MAP.get("{$executionType}")
 if AgentClass is None:
     # raise RuntimeError(f"Unknown execution_type '{$executionType}'")
-    raise RuntimeError(f"Unknown execution_type ''")
+    raise RuntimeError(f"Unknown execution_type '{$executionType}'")
 
 
 # Initialize root agent
 root_agent = AgentClass(
-    model="gemini-2.5-flash",
-    name="test",
-    instruction="""answer user question""",   
+    model="{$agentModel}",
+    name="{$agentName}",
+    instruction="""{$agentInstruction} {session_id} is the session ID, {user_id} is the user ID, and {merchant_id} is the merchant ID.
+    
+    When calling tools, ensure to include the session information in the args:
+    {
+        "session": {
+            "session_id": "{session_id}",
+            "user_id": "{user_id}",
+            "merchant_id": "{merchant_id}"
+        }
+    }""",   
     
     # toolset = [MCPToolset(
     #         connection_params=SseConnectionParams(url="https://session-1753173224-541238774180.us-central1.run.app/sse")

@@ -20,11 +20,11 @@ from google.adk.agents.callback_context import CallbackContext
 from google.adk.planners import BuiltInPlanner
 from google.genai import types
 
-{$agentOpsBlock}
+
 
 # Available tools for this agent
-AVAILABLE_TOOLS = {$toolNames}
-# 
+AVAILABLE_TOOLS = ['get_product_skus', 'get_product_variants_by_sku', 'get_product_variants']
+#
 
 # Map agent types to their corresponding classes
 AGENT_CLASS_MAP = {
@@ -35,28 +35,31 @@ AGENT_CLASS_MAP = {
 }
 
 # Get the agent class based on execution type
-AgentClass = AGENT_CLASS_MAP.get("{$executionType}")
+AgentClass = AGENT_CLASS_MAP.get("LlmAgent")
 if AgentClass is None:
-    # raise RuntimeError(f"Unknown execution_type '{$executionType}'")
-    raise RuntimeError(f"Unknown execution_type '{$executionType}'")
+    # raise RuntimeError(f"Unknown execution_type 'LlmAgent'")
+    raise RuntimeError(f"Unknown execution_type 'LlmAgent'")
 
 
 # Initialize root agent
 root_agent = AgentClass(
     model="gemini-2.5-pro",
-    name="{$agentName}",
-    instruction="""{$agentInstruction}""",   
-    
+    name="testingnewagenttemplatetwo",
+    instruction="""You are a helpful AI assistant. You have access to the following tools:
+  
+
+""",
+
     # toolset = [MCPToolset(
     #         connection_params=SseConnectionParams(url="https://session-1753173224-541238774180.us-central1.run.app/sse")
     #     ),
     #     tool_filter=AVAILABLE_TOOLS
     # ],
-    
+
     tools=[
         MCPToolset(
             connection_params=SseConnectionParams(
-                url="{$mcpServerUrl}/sse",
+                url="https://testuid4-1754065711-i4ycrvxfva-uc.a.run.app/sse",
                 headers={'Accept': 'text/event-stream'},
             ),
             tool_filter=AVAILABLE_TOOLS,

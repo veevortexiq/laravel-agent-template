@@ -65,7 +65,7 @@ root_agent = AgentClass(
     tools=[
         MCPToolset(
             connection_params=SseConnectionParams(
-                url="https://session-1753173224-541238774180.us-central1.run.app/sse",
+                url="{$mcpServerUrl}",
                 headers={'Accept': 'text/event-stream'},
             ),
             tool_filter=AVAILABLE_TOOLS,
